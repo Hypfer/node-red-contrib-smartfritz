@@ -8,19 +8,16 @@ module.exports = function(RED) {
     node.fritzip = n.fritzip;
     node.sid = null;
     var sessionID;
+    var username = node.credentials.username ? node.credentials.username : "user";
+    var password = node.credentials.password ? node.credentials.password : "";
 
     try {
       node.log('Init SmartfritzConfigNode.');
-      if (!node.credentials.username) {
-        node.error('Empty username.');
-        return;
-      }
-      node.log('Username: ' + node.credentials.username);
 
-      fritz.getSessionID(node.credentials.username, node.credentials.password,
+      fritz.getSessionID(username, password,
         function(sessionID) {
           node.log('Session ID: ' + sessionID);
-          if ((!sessionID) || (sessionID == '0000000000000000')) {
+          if ((!sessionID) || (sessionID === '0000000000000000')) {
             node.error('Error logging in to Fritz IP: ' + node.fritzip +
               '. \nWrong password?');
             return;
@@ -32,7 +29,6 @@ module.exports = function(RED) {
 
     } catch (err) {
       node.error(err + ' IP (' + node.fritzip + ').');
-      return;
     }
   }
 
