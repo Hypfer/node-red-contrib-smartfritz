@@ -8,13 +8,11 @@ module.exports = function(RED) {
     node.fritzip = n.fritzip;
     node.sid = null;
     var sessionID;
-    var username = node.credentials.username ? node.credentials.username : "user";
-    var password = node.credentials.password ? node.credentials.password : "";
 
     try {
       node.log('Init SmartfritzConfigNode.');
 
-      fritz.getSessionID(username, password,
+      fritz.getSessionID("user", "",
         function(sessionID) {
           node.log('Session ID: ' + sessionID);
           if ((!sessionID) || (sessionID === '0000000000000000')) {
